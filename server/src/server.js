@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/errorHandler');
 const authRoutes = require('./routes/authRoutes');
+const companyRoutes = require('./routes/companyRoutes');
 
 dotenv.config();
 
@@ -31,7 +32,7 @@ app.get('/api/health', (req, res) => {
 });
 
 app.use('/api/auth', authRoutes);
-
+app.use('/api/company', companyRoutes);
 
 // Global error handler (must be last)
 app.use(errorHandler);

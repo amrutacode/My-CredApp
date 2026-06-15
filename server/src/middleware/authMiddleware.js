@@ -27,6 +27,19 @@ const protect = asyncHandler(async (req, res, next) => {
   next();
 });
 
+// Flexible role check — pass any number of allowed roles
+const authorizeRoles = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      throw new AppError(
+        `Role '${req.user.role}' is not authorized to access this route`,
+        403
+      );
+    }
+    next();
+  };
+};
+
 const adminOnly = asyncHandler(async (req, res, next) => {
   if (req.user.role !== 'admin') {
     throw new AppError('Admin access required', 403);
@@ -34,4 +47,4 @@ const adminOnly = asyncHandler(async (req, res, next) => {
   next();
 });
 
-module.exports = { protect, adminOnly };
+module.exports = { protect, adminOnly, authorizeRoles };
